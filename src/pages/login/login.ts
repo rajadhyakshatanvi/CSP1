@@ -35,6 +35,25 @@ export class LoginPage {
     }).present();
   }
 
+  sendEmailVerification() {
+    this.fire.authState.subscribe(user => {
+        user.sendEmailVerification()
+        .then(() => {
+          let alert=this.alertCtrl.create({
+            subTitle : 'Verification Email Sent.',
+            buttons: ['OK', {
+              text: 'Resend',
+              handler: data => {
+                  this.sendEmailVerification();
+                  }
+                }
+            ]
+          });
+          alert.present();
+        })
+      });
+  }
+
   signInUser() {
     this.fire.auth.signInWithEmailAndPassword(this.uname.value, this.password.value)
     .then(user => {
@@ -43,7 +62,17 @@ export class LoginPage {
         this.navCtrl.setRoot(CameraPage);
       }
       else {
-        this.alert('Email not verified. Check your mail to verify your account.')
+        this.alertCtrl.create({
+          subTitle: 'Email not verified. Check your mail to verify your account.',
+          buttons: ['OK', {
+            text: 'Resend',
+            handler: data => {
+            this.sendEmailVerification();
+            }
+          }]
+        }).present();
+        //this.alert('Email not verified. Check your mail to verify your account.')
+
       }
     })
     .catch(error => {
@@ -54,7 +83,9 @@ export class LoginPage {
         this.alert('Invalid Password');
       }
       else {
+        console.log(error.code);
         this.alert(error.message);
+
       }
 
     })
