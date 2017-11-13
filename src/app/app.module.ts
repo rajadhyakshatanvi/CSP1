@@ -8,6 +8,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { HttpModule } from '@angular/http';
+import firebase from 'firebase';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -15,6 +17,8 @@ import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { CameraPage } from '../pages/camera/camera';
 import { RequestPage } from '../pages/request/request';
+import { FirebaseServiceProvider } from '../providers/firebase-service/firebase-service';
+
 
 const firebaseAuth = {
   apiKey: "AIzaSyD7hV04hDq6OALh-AWxWM2jvA_1QP7fCBM",
@@ -39,7 +43,8 @@ const firebaseAuth = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseAuth),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -56,7 +61,9 @@ const firebaseAuth = {
     Geolocation,
     Camera,
 
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FirebaseServiceProvider,
+
   ]
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { RequestPage } from '../request/request';
 /**
@@ -18,8 +19,16 @@ import { RequestPage } from '../request/request';
 export class CameraPage {
   public base64Image: string;
   public type: string;
+  public displayName: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private camera: Camera,
+              public alertCtrl: AlertController,
+              private afAuth: AngularFireAuth) {
+                  
+
+
   }
 
   ionViewDidLoad() {
