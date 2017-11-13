@@ -1,0 +1,19 @@
+<ion-header >
+  <ion-navbar color="primary">
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="home background">
+  <ion-fab bottom center>
+    <button ion-fab color="primary"  class="fab">
+      <ion-icon name="camera" isActive="false" class="fabicon"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab mini margin-bottom color="primary" (click)="pothole()">Pothole</button>
+      <button ion-fab mini margin-bottom color="primary" (click)="garbage()">Garbage</button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

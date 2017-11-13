@@ -1,0 +1,31 @@
+page-request {
+  .background {
+    background-image: url('../../assets/imgs/bg.jpg');
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image: linear-gradient(to bottom right, #fff, #fff);
+      opacity: 0.9;
+    }
+  }
+  .scroll {
+        height: 100%
+    }
+    .dispcard {
+      height:200px;
+    }
+    #img1 {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+    #map {
+        width: 100%;
+        height: 100%;
+      }
+}

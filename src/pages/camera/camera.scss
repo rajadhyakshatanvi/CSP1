@@ -1,0 +1,22 @@
+page-camera {
+  .fabicon {
+    font-size: 55px !important;
+  }
+  .fl {
+    margin-bottom: 100px;
+  }
+  .background {
+    background-image: url('../../assets/imgs/bg.jpg');
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image: linear-gradient(to bottom right, #fff, #fff);
+      opacity: 0.9;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        <ion-list>
+
+          <ion-item>
+            <ion-input type="text" placeholder="Email" #username></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="password" placeholder="Password" #password></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+        <div padding>
+          <button ion-button round block (click)="signInUser()">Sign In</button>
+        </div>
+        <a (click)='showPrompt()'>Forgot Password?</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

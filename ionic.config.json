@@ -1,0 +1,8 @@
+{
+  "name": "CSP1",
+  "app_id": "ace70af8",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
