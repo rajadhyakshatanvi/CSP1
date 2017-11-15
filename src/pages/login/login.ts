@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { CameraPage } from '../camera/camera';
@@ -21,7 +21,11 @@ export class LoginPage {
   @ViewChild('username') uname;
   @ViewChild('password') password;
 
-  constructor(private fire:AngularFireAuth, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+  constructor(private fire:AngularFireAuth,
+              public navCtrl: NavController,
+              public navParams: NavParams,
+              public alertCtrl: AlertController,
+              public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -58,7 +62,12 @@ export class LoginPage {
     this.fire.auth.signInWithEmailAndPassword(this.uname.value, this.password.value)
     .then(user => {
       if(user.emailVerified) {
-        this.alert("You are logged in")
+        //this.alert("You are logged in")
+        this.toastCtrl.create({
+          message: 'You are logged in!',
+          duration: 3000,
+          position: 'top'
+        }).present();
         this.navCtrl.setRoot(CameraPage);
       }
       else {
