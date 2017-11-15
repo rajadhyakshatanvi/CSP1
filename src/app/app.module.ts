@@ -20,6 +20,8 @@ import { RequestPage } from '../pages/request/request';
 import { FirebaseServiceProvider } from '../providers/firebase-service/firebase-service';
 
 
+
+
 const firebaseAuth = {
   apiKey: "AIzaSyD7hV04hDq6OALh-AWxWM2jvA_1QP7fCBM",
     authDomain: "dbs3-bf9f4.firebaseapp.com",
@@ -61,9 +63,10 @@ const firebaseAuth = {
     Geolocation,
     Camera,
 
+
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FirebaseServiceProvider,
-
+    
   ]
 })
 export class AppModule {}

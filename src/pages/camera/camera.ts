@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { Camera } from '@ionic-native/camera';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { RequestPage } from '../request/request';
+import { HomePage } from '../home/home';
 /**
  * Generated class for the CameraPage page.
  *
@@ -17,53 +17,33 @@ import { RequestPage } from '../request/request';
   templateUrl: 'camera.html',
 })
 export class CameraPage {
-  public base64Image: string;
   public type: string;
-  public displayName: string;
-
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              private camera: Camera,
-              public alertCtrl: AlertController,
-              private afAuth: AngularFireAuth) {
-                  
 
 
+  constructor(public navCtrl: NavController,public navParams: NavParams, public afAuth: AngularFireAuth) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CameraPage');
+    //console.log('ionViewDidLoad CameraPage');
+
   }
 
   pothole() {
     this.type = "Pothole";
-    this.takePicture();
+    this.navCtrl.push(RequestPage, {
+      param2: this.type
+    });
   }
   garbage() {
     this.type = "Garbage";
-    this.takePicture();
+    this.navCtrl.push(RequestPage, {
+      param2: this.type
+    });
   }
 
-  takePicture(){
-
-    this.camera.getPicture({
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      cameraDirection: 0
-  //      targetWidth: 1000,
-  //      targetHeight: 1000
-    }).then((imageData) => {
-      // imageData is a base64 encoded string
-        this.base64Image = "data:image/jpeg;base64," + imageData;
-        this.navCtrl.push(RequestPage, {
-          param1: this.base64Image,
-          param2: this.type
-        });
-    }, (err) => {
-        console.log(err);
-    });
+  logoutUser() {
+    this.afAuth.auth.signOut();
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Camera } from '@ionic-native/camera';
 import { storage } from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Entry } from '../../models/entry';
 import firebase from 'firebase';
+import { LoadingController } from 'ionic-angular';
 
 declare var google;
 declare var map;
 declare var infoWindow;
+//declare var disabled = false;
+
 
 /**
  * Generated class for the RequestPage page.
@@ -27,6 +31,7 @@ export class RequestPage {
   public base64Image: string;
   public uid: string;
   public type: string;
+  public disabled: boolean = false;
   //public lati: number;
   //public lngi:number;
 
@@ -36,13 +41,15 @@ export class RequestPage {
               public navParams: NavParams,
               public alertCtrl: AlertController,
               private geolocation: Geolocation,
+              private camera: Camera,
               private afDatabase: AngularFireDatabase,
+              public loadingCtrl : LoadingController,
               private afAuth: AngularFireAuth) {
-    this.base64Image = navParams.get('param1');
+    //this.base64Image = navParams.get('param1');
     this.type = navParams.get('param2');
     this.ent.type = this.type;
     this.ent.time = firebase.database.ServerValue.TIMESTAMP;
-
+    this.disabled = false;
 
 
     afAuth.authState.subscribe(user => {
@@ -73,8 +80,26 @@ export class RequestPage {
 });
   }
 
+  ionViewWillEnter() {
+    this.camera.getPicture({
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      cameraDirection: 0
+  //      targetWidth: 1000,
+  //      targetHeight: 1000
+    }).then((imageData) => {
+      // imageData is a base64 encoded string
+        this.base64Image = "data:image/jpeg;base64," + imageData;
+        }, (err) => {
+        console.log(err);
+    });
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad RequestPage');
+    //this.loadingCtrl.dismiss();
   }
 
   googleMap() {
@@ -109,13 +134,14 @@ export class RequestPage {
         }
   }
 
-  handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser does not support geolocation.');
         infoWindow.open(map);
       }
+
 
       generateUUID() : string {
         function s4() {
@@ -125,7 +151,7 @@ export class RequestPage {
         s4() + '-' + s4() + s4() + s4();
       }
 
-      getUrl(userId: string, imageId: string) {
+      /*getUrl(userId: string, imageId: string) {
         let storageRef = firebase.storage().ref();
         let imageRef = storageRef.child(`${userId}/${imageId}.jpg`);
         imageRef.getDownloadURL().then(url => {
@@ -134,30 +160,41 @@ export class RequestPage {
         }).then(() => {
           this.addToDatabase();
         })
-      }
+      }*/
 
       uploadImage(){
+        this.disabled = true;
+        this.loadingCtrl.create({
+          content: 'Please Wait...',
+          dismissOnPageChange: true
+        }).present();
         let storageRef = firebase.storage().ref();
         let imageName = this.generateUUID();
         let imageRef = storageRef.child(this.uid + '/' + imageName + '.jpg');
         imageRef.putString(this.base64Image, 'data_url').then((data) => {
-          this.getUrl(this.uid,imageName);
+          imageRef.getDownloadURL().then(url => {
+            this.ent.imageUrl = url;
+
+          }).then(() => {
+            this.addToDatabase();
+          });
         });
 
       }
 
       addToDatabase(){
-
-        //this.ent.imageUrl = imageRef.getDownloadURL();
-        //this.getUrl(this.uid, imageName);
-
-
         this.afAuth.authState.subscribe(auth => {
           this.afDatabase.list('requests/' +this.uid).push(this.ent);
 
         });
-
-      }
+        this.navCtrl.pop().then(() => {
+          this.alertCtrl.create({
+            title: 'Request Registered',
+            subTitle: 'Thankyou for registering your request. You will receive the details of the request shortly.',
+            buttons: ['OK']
+          }).present();
+        })
+    }
 
 
 }
