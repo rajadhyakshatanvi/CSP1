@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { RequestPage } from '../request/request';
@@ -20,7 +20,10 @@ export class CameraPage {
   public type: string;
 
 
-  constructor(public navCtrl: NavController,public navParams: NavParams, public afAuth: AngularFireAuth) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public afAuth: AngularFireAuth,
+    public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -42,8 +45,26 @@ export class CameraPage {
   }
 
   logoutUser() {
-    this.afAuth.auth.signOut();
-    this.navCtrl.setRoot(HomePage);
+    this.alertCtrl.create({
+      title: 'Log Out',
+      message: 'Are you sure you want to log out?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.afAuth.auth.signOut();
+            this.navCtrl.setRoot(HomePage);
+          }
+        }
+      ]
+    }).present();
+
   }
 
 }
