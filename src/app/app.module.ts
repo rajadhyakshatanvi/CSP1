@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { Pro } from '@ionic/pro';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,6 +31,7 @@ const firebaseAuth = {
     storageBucket: "dbs3-bf9f4.appspot.com",
     messagingSenderId: "24006357032"
 };
+const IonicPro = Pro.init('9c68906f');
 
 @NgModule({
   declarations: [
@@ -66,7 +68,7 @@ const firebaseAuth = {
 
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FirebaseServiceProvider,
-    
+
   ]
 })
 export class AppModule {}
